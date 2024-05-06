@@ -22,6 +22,7 @@ class Player:
     def update(self):
         self.update_x()
         self.update_y()
+        self.sword.update( self.x, self.y, self.dx )
        
 
     def update_x(self):
@@ -67,6 +68,7 @@ class Player:
 
     def draw(self):
         pyxel.rect(self.x, self.y, 8, 8, 10)
+        self.sword.draw()
 
 
 
@@ -75,10 +77,15 @@ class Sword:
     def __init__(self):
         self.x = 0
         self.y = 0
+        self.dx = 1
+        self.length = 8
 
-    def update(self, x, y):
-        self.x = x
-        self.y = y
+    def update(self, x, y, dx):
+        if dx == 0:
+            dx = 1
+
+        self.x = x + self.length * dx / abs(dx)
+        self.y = y + 3
 
     def draw(self):
-        pyxel.rect(self.x, self.y, 8, 8, 6)
+        pyxel.rect(self.x, self.y, self.length, 2, 6)
