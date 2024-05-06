@@ -2,7 +2,7 @@ import pyxel
 
 class Player:
     def __init__(self):
-        self.x = pyxel.width / 2 - 4
+        self.x = pyxel.width / 2
         self.y = 0
         self.dx = 0
         self.dy = 0
@@ -67,7 +67,7 @@ class Player:
 
     def is_in_border(self):
         new_x = self.x + self.dx
-        if self.margin < new_x < pyxel.width - self.margin - 8:
+        if self.margin < new_x < pyxel.width - self.margin:
             return False
 
         return True
@@ -92,7 +92,7 @@ class Player:
         else:
             u = (pyxel.frame_count // 3 % 4) * 8
 
-        pyxel.blt(self.x, self.y, 0, u, 0, w, 8, 0)
+        pyxel.blt(self.x - 4, self.y - 4, 0, u, 0, w, 8, 0)
         self.sword.draw(-1 if u>0 else 0)
 
 
@@ -106,7 +106,6 @@ class Sword:
         self.length = 4
 
     def update(self, x, y, dx):
-
         if dx == 0:
             self.dx = 1
         else:
@@ -117,4 +116,4 @@ class Sword:
 
     def draw(self, extra_y = 0):
         w = self.dx / abs(self.dx) * 8
-        pyxel.blt(self.x, self.y + extra_y, 0, 0, 16, w, 8, 0)
+        pyxel.blt(self.x - 4, self.y - 4 + extra_y, 0, 0, 16, w, 8, 0)
