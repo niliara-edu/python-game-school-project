@@ -3,9 +3,11 @@ import player as player_file
 
 class App:
     def __init__(self):
-        pyxel.init(160, 120)
+        pyxel.init(100, 100)
         self.player = player_file.Player()
+        pyxel.load("assets/cosas.pyxres")
         pyxel.run(self.update, self.draw)
+        
 
     def update(self):
         self.player.update()

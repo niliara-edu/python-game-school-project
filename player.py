@@ -10,11 +10,12 @@ class Player:
         self.dxlast = 0
         self.on_ground = False
 
-        self.speed = 2
+        self.speed = 1
         self.gravity = 1.2
         self.jump_force = 8
+        self.margin = 10
 
-        self.ground_level = 92
+        self.ground_level = 50
 
         self.sword = Sword()
 
@@ -22,7 +23,7 @@ class Player:
     def update(self):
         self.update_x()
         self.update_y()
-        self.sword.update( self.x, self.y, self.dx )
+        self.sword.update( self.x, self.y, self.dxlast )
        
 
     def update_x(self):
@@ -31,6 +32,10 @@ class Player:
             self.dx += self.speed
         if pyxel.btn(pyxel.KEY_LEFT):
             self.dx -= self.speed
+
+        if self.is_in_border():
+            self.dx = 0
+            return
 
         if self.dx == 0:
             self.dx = self.dxlast
@@ -60,6 +65,13 @@ class Player:
         else:
             return False
 
+    def is_in_border(self):
+        new_x = self.x + self.dx
+        if self.margin < new_x < pyxel.width - self.margin - 8:
+            return False
+
+        return True
+
     def check_jump(self):
         if pyxel.btn(pyxel.KEY_UP):
             self.dy = -self.jump_force
@@ -67,7 +79,20 @@ class Player:
 
 
     def draw(self):
-        pyxel.rect(self.x, self.y, 8, 8, 10)
+        w = 8 if self.dxlast >= 0 else -8
+
+        if not self.on_ground:
+            if self.dy < 0:
+                u = 16
+            if self.dy > 0:
+                u = 24
+
+        elif self.dx == 0:
+            u = 0
+        else:
+            u = (pyxel.frame_count // 3 % 4) * 8
+
+        pyxel.blt(self.x, self.y, 0, u, 0, w, 8, 0)
         self.sword.draw()
 
 
