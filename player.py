@@ -2,7 +2,7 @@ import pyxel
 
 class Player:
     def __init__(self):
-        self.x = 20
+        self.x = pyxel.width / 2 - 4
         self.y = 0
         self.dx = 0
         self.dy = 0
@@ -11,8 +11,8 @@ class Player:
         self.on_ground = False
 
         self.speed = 1
-        self.gravity = 1.2
-        self.jump_force = 8
+        self.gravity = 0.8
+        self.jump_force = 6
         self.margin = 10
 
         self.ground_level = 50
@@ -93,7 +93,7 @@ class Player:
             u = (pyxel.frame_count // 3 % 4) * 8
 
         pyxel.blt(self.x, self.y, 0, u, 0, w, 8, 0)
-        self.sword.draw()
+        self.sword.draw(-1 if u>0 else 0)
 
 
 
@@ -103,14 +103,18 @@ class Sword:
         self.x = 0
         self.y = 0
         self.dx = 1
-        self.length = 8
+        self.length = 4
 
     def update(self, x, y, dx):
+
         if dx == 0:
-            dx = 1
+            self.dx = 1
+        else:
+            self.dx = dx
 
-        self.x = x + self.length * dx / abs(dx)
-        self.y = y + 3
+        self.x = x + self.length * self.dx / abs(self.dx)
+        self.y = y
 
-    def draw(self):
-        pyxel.rect(self.x, self.y, self.length, 2, 6)
+    def draw(self, extra_y = 0):
+        w = self.dx / abs(self.dx) * 8
+        pyxel.blt(self.x, self.y + extra_y, 0, 0, 16, w, 8, 0)
