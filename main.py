@@ -3,6 +3,7 @@ import player
 import enemies.slime as slime
 import enemies.moai as moai
 import clock
+import database
 
 active_enemies = []
 dead_enemies = []
@@ -10,8 +11,8 @@ oncoming_spawn_timers = []
 
 counter = {
     "current_enemies": 0,
-    "max_enemies": 5,
-    "enemies_til_next_phase": 5,
+    "max_enemies": 4,
+    "enemies_til_next_phase": 10,
 }
 
 
@@ -20,6 +21,7 @@ class App:
         pyxel.init(100, 80)
         self.player = player.Player()
         pyxel.load("assets/cosas.pyxres")
+        database.start_table()
 
         pyxel.run(self.update, self.draw)
 
@@ -30,6 +32,7 @@ class App:
         self.update_enemies()
         
         if pyxel.btn(pyxel.KEY_Q):
+            database.close()
             pyxel.quit()
 
 
@@ -60,7 +63,10 @@ class App:
                 oncoming_spawn_timers.append( clock.Spawn_timer( slime.Enemy() ) )
                 active_enemies.remove(enemy)
                 dead_enemies.append( enemy )
+
                 counter["enemies_til_next_phase"] -= 1
+                if counter["enemies_til_next_phase"] == 0:
+                    self.next_phase()
 
 
     def are_nearby(self, vec1, vec2, distance=(4,4)):
@@ -72,6 +78,11 @@ class App:
 
         return False
 
+
+    def next_phase(self):
+        clock.text_time_left = clock.text_span
+
+    
 
     def draw(self):
         pyxel.cls(0)
@@ -85,20 +96,22 @@ class App:
         for enemy in active_enemies:
             enemy.draw()
         for enemy in dead_enemies:
-            if enemy.countdown < 0:
-                print(enemy.countdown)
+            if enemy.countdown < 12:
                 enemy.death_anima()
             else:
                 dead_enemies.remove(enemy)
 
 
     def draw_stats(self):
-        pyxel.text(0, 0, "{0:0=2d}".format(counter["enemies_til_next_phase"]), 3)
-        pyxel.text(35, 20, "Round up", pyxel.frame_count % 16)
+        pyxel.text(2, 2, "{0:0=2d}".format(counter["enemies_til_next_phase"]), 10) # double digit int from Stack Overflow
+
+        if clock.text_time_left > 0:
+            clock.text_time_left -= 1
+            pyxel.text(35, 20, "Round up", pyxel.frame_count % 16) # From pyxel hello world example
 
 
     def draw_ground(self):
-        pyxel.rect(0, 54, 100, 50, 6)
+        pyxel.rect(0, 54, 100, 50, 3)
 
 
 App()

@@ -79,7 +79,7 @@ class Player:
 
 
     def draw(self):
-        w = 8 if self.dxlast >= 0 else -8
+        w = 8 if self.dxlast >= 0 else -8 # From pyxel plattformer example
 
         if not self.on_ground:
             if self.dy < 0:
@@ -90,9 +90,9 @@ class Player:
         elif self.dx == 0:
             u = 0
         else:
-            u = (pyxel.frame_count // 3 % 4) * 8
+            u = (pyxel.frame_count // 3 % 4) * 8 # From pyxel plattformer example
 
-        pyxel.blt(self.x - 4, self.y - 4, 0, u, 0, w, 8, 0)
+        pyxel.blt(self.x - 4, self.y - 4, 0, u, 0, w, 8, 0) # From pyxel plattformer example
         self.sword.draw(-1 if u>0 else 0)
 
 
