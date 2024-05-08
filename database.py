@@ -13,18 +13,21 @@ def start_table():
     cursor.execute(sqlite_query)
     
     sqlite_query = """
-    create table \
-    if not exists \
-    round (\
-    num int(8), \
-    max_enemies int(8), \
-    slimes int(8), \
-    moaix int(8));"""
-    
+    create table 
+    if not exists 
+    round (
+        num int(8), 
+        max_enemies int(8), 
+        enemies_til_next int(8), 
+    );
+    """
+
     cursor.execute(sqlite_query)
-    
+
+
+
     sqlite_query = """
-    insert into round values (1, 10, 8, 2);
+    insert into round (num, max_enemies, enemies_til_next) values (1, 10, 20);
     """
     cursor.execute(sqlite_query)
     
@@ -36,7 +39,7 @@ def start_table():
     
     
     record = cursor.fetchall()
-    print("SQLite Database Version is: ", record)
+    print("Round table values: ", record)
     cursor.close()
 
 

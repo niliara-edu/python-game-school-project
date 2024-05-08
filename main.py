@@ -12,7 +12,8 @@ oncoming_spawn_timers = []
 counter = {
     "current_enemies": 0,
     "max_enemies": 4,
-    "enemies_til_next_phase": 10,
+    "enemies_til_next": 10,
+    "round": 0,
 }
 
 
@@ -37,16 +38,14 @@ class App:
 
 
     def update_clock(self):
-        clock.time += 1
-
         if counter["current_enemies"] < counter["max_enemies"] \
-        and clock.time - clock.delay_enemy_spawn >= clock.time_last_enemy_spawn:
+        and pyxel.frame_count - clock.delay_enemy_spawn >= clock.time_last_enemy_spawn:
             self.spawn_enemy()
             counter["current_enemies"] += 1
-            clock.time_last_enemy_spawn = clock.time
+            clock.time_last_enemy_spawn = pyxel.frame_count
 
         for procedure in oncoming_spawn_timers:
-            if procedure.expected_time <= clock.time:
+            if procedure.expected_time <= pyxel.frame_count:
                 oncoming_spawn_timers.remove(procedure)
                 active_enemies.append(slime.Enemy())
 
@@ -64,9 +63,9 @@ class App:
                 active_enemies.remove(enemy)
                 dead_enemies.append( enemy )
 
-                counter["enemies_til_next_phase"] -= 1
-                if counter["enemies_til_next_phase"] == 0:
-                    self.next_phase()
+                counter["enemies_til_next"] -= 1
+                if counter["enemies_til_next"] == 0:
+                    self.round_up()
 
 
     def are_nearby(self, vec1, vec2, distance=(4,4)):
@@ -79,10 +78,16 @@ class App:
         return False
 
 
-    def next_phase(self):
+    def round_up(self):
         clock.text_time_left = clock.text_span
+        counter["round"] += 1
+        round_data = database.get_round_data( counter["round"] )
 
+        counter["max_enemies"]= round_data["max_enemies"]
+        counter["enemies_til_next"]= round_data["enemies_til_next"]
+        counter[""]
     
+
 
     def draw(self):
         pyxel.cls(0)
@@ -103,7 +108,7 @@ class App:
 
 
     def draw_stats(self):
-        pyxel.text(2, 2, "{0:0=2d}".format(counter["enemies_til_next_phase"]), 10) # double digit int from Stack Overflow
+        pyxel.text(2, 2, "{0:0=2d}".format(counter["enemies_til_next"]), 10) # double digit int from Stack Overflow
 
         if clock.text_time_left > 0:
             clock.text_time_left -= 1
