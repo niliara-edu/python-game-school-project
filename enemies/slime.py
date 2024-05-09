@@ -5,7 +5,7 @@ import random
 class Enemy:
     def __init__(self):
         self.x = random.randint(10,90)
-        self.y = 100
+        self.y = 92
         self.dx = random.randint(0,1)
         if self.dx == 0: self.dx = -1
         

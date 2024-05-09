@@ -9,10 +9,38 @@ active_enemies = []
 dead_enemies = []
 oncoming_spawn_timers = []
 
+stage1_enemies = [
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    moai.Enemy(),
+    slime.Enemy(),
+    slime.Enemy(),
+    slime.Enemy(),
+    slime.Enemy()
+]
+
 counter = {
     "current_enemies": 0,
-    "max_enemies": 4,
-    "enemies_til_next": 10,
+    "max_enemies": 3,
+    "enemies_til_next": 5,
     "round": 0,
 }
 
@@ -46,12 +74,18 @@ class App:
 
         for procedure in oncoming_spawn_timers:
             if procedure.expected_time <= pyxel.frame_count:
+                procedure.entity.__init__()
+                active_enemies.append(procedure.entity)
                 oncoming_spawn_timers.remove(procedure)
-                active_enemies.append(slime.Enemy())
+
 
 
     def spawn_enemy(self):
-        active_enemies.append(slime.Enemy())
+        try:
+            active_enemies.append( stage1_enemies[counter["current_enemies"]] )
+        except:
+            active_enemies.append( slime.Enemy() )
+            
     
 
     def update_enemies(self):
@@ -85,7 +119,6 @@ class App:
 
         counter["max_enemies"]= round_data["max_enemies"]
         counter["enemies_til_next"]= round_data["enemies_til_next"]
-        counter[""]
     
 
 

@@ -49,5 +49,4 @@ class Enemy:
         w = 8 if self.dx >= 0 else -8
         u = (self.countdown // 3 % 4) * 8
 
-        pyxel.blt(self.x - 4, self.y - 4, 0, u, 24, w, 8, 0)
 
