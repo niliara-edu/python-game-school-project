@@ -7,30 +7,8 @@ import database
 
 active_enemies = []
 dead_enemies = []
-oncoming_spawn_timers = []
 
 stage1_enemies = [
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
-    moai.Enemy(),
     slime.Enemy(),
     slime.Enemy(),
     slime.Enemy(),
@@ -72,13 +50,6 @@ class App:
             counter["current_enemies"] += 1
             clock.time_last_enemy_spawn = pyxel.frame_count
 
-        for procedure in oncoming_spawn_timers:
-            if procedure.expected_time <= pyxel.frame_count:
-                procedure.entity.__init__()
-                active_enemies.append(procedure.entity)
-                oncoming_spawn_timers.remove(procedure)
-
-
 
     def spawn_enemy(self):
         try:
@@ -93,13 +64,19 @@ class App:
             enemy.update()
 
             if self.are_nearby( (self.player.sword.x, self.player.sword.y), (enemy.x, enemy.y) ):
-                oncoming_spawn_timers.append( clock.Spawn_timer( slime.Enemy() ) )
                 active_enemies.remove(enemy)
+                enemy.respawn_time = pyxel.frame_count + clock.delay_enemy_respawn
                 dead_enemies.append( enemy )
 
                 counter["enemies_til_next"] -= 1
                 if counter["enemies_til_next"] == 0:
                     self.round_up()
+
+        for enemy in dead_enemies:
+            if enemy.respawn_time <= pyxel.frame_count:
+                dead_enemies.remove(enemy)
+                enemy.__init__()
+                active_enemies.append(enemy)
 
 
     def are_nearby(self, vec1, vec2, distance=(4,4)):
@@ -133,11 +110,10 @@ class App:
     def draw_enemies(self):
         for enemy in active_enemies:
             enemy.draw()
+
         for enemy in dead_enemies:
-            if enemy.countdown < 12:
+            if enemy.death_anima_frame < 12:
                 enemy.death_anima()
-            else:
-                dead_enemies.remove(enemy)
 
 
     def draw_stats(self):

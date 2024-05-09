@@ -10,7 +10,8 @@ class Enemy:
         if self.dx == 0: self.dx = -1
         
         self.margin = 10
-        self.countdown = 0
+        self.respawn_time = 0
+        self.death_anima_frame = 0
         self.ground_level = 50
         self.chance_to_flip = 25
 
@@ -45,9 +46,9 @@ class Enemy:
 
 
     def death_anima(self):
-        self.countdown += 1
+        self.death_anima_frame += 1
         w = 8 if self.dx >= 0 else -8
-        u = (self.countdown // 3 % 4) * 8
+        u = (self.death_anima_frame // 3 % 4) * 8
 
         pyxel.blt(self.x - 4, self.y - 4, 0, u, 24, w, 8, 0)
 

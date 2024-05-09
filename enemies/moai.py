@@ -3,7 +3,6 @@ import random
 
 
 class Enemy:
-    id = 1
     def __init__(self):
         self.x = random.randint(10,90)
         self.y = 80
