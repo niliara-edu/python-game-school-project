@@ -1,7 +1,6 @@
 import pyxel
 import player
 import enemies.slime as slime
-import enemies.moai as moai
 import clock
 import database
 
