@@ -52,5 +52,5 @@ def get_round_data(round_num):
     
 
 def close():
-    connection.close()
     cursor.close()
+    connection.close()
