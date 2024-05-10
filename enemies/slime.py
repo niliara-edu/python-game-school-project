@@ -12,11 +12,13 @@ class Enemy:
         self.margin = 10
         self.respawn_time = 0
         self.death_anima_frame = 0
+        self.death_anima_enabled = False
         self.ground_level = 50
         self.chance_to_flip = 25
 
         self.speed = 0.7
         self.dx *= self.speed
+
 
 
     def update(self):

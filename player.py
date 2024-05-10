@@ -8,7 +8,7 @@ class Player:
         self.dy = 0
 
         self.dxlast = 0
-        self.on_ground = False
+        self.was_on_ground = False
 
         self.speed = 1
         self.gravity = 0.8
@@ -45,14 +45,14 @@ class Player:
 
 
     def update_y(self):
-        if self.on_ground:
+        if self.was_on_ground:
             self.check_jump()
             return
 
         if self.is_on_ground():
             self.dy = 0
             self.y = self.ground_level
-            self.on_ground = True
+            self.was_on_ground = True
             self.check_jump()
             return
 
@@ -75,13 +75,13 @@ class Player:
     def check_jump(self):
         if pyxel.btn(pyxel.KEY_UP):
             self.dy = -self.jump_force
-            self.on_ground = False
+            self.was_on_ground = False
 
 
     def draw(self):
         w = 8 if self.dxlast >= 0 else -8 # From pyxel plattformer example
 
-        if not self.on_ground:
+        if not self.was_on_ground:
             if self.dy < 0:
                 u = 16
             if self.dy > 0:

@@ -18,7 +18,7 @@ stage1_enemies = [
 counter = {
     "current_enemies": 0,
     "max_enemies": 3,
-    "enemies_til_next": 5,
+    "enemies_until_next_round": 5,
     "round": 0,
 }
 
@@ -34,6 +34,9 @@ class App:
 
         
     def update(self):
+        if clock.round_up_text_time_left > 0:
+            return
+
         self.player.update()
         self.update_clock()
         self.update_enemies()
@@ -68,8 +71,8 @@ class App:
                 enemy.respawn_time = pyxel.frame_count + clock.delay_enemy_respawn
                 dead_enemies.append( enemy )
 
-                counter["enemies_til_next"] -= 1
-                if counter["enemies_til_next"] == 0:
+                counter["enemies_until_next_round"] -= 1
+                if counter["enemies_until_next_round"] == 0:
                     self.round_up()
 
         for enemy in dead_enemies:
@@ -90,16 +93,21 @@ class App:
 
 
     def round_up(self):
-        clock.text_time_left = clock.text_span
+        clock.round_up_text_time_left = clock.round_up_text_span
         counter["round"] += 1
         round_data = database.get_round_data( counter["round"] )
 
         counter["max_enemies"]= round_data["max_enemies"]
-        counter["enemies_til_next"]= round_data["enemies_til_next"]
+        counter["enemies_until_next_round"]= round_data["enemies_until_next_round"]
     
 
 
     def draw(self):
+        if clock.round_up_text_time_left > 0:
+            self.draw_round_up_text()
+            clock.round_up_text_time_left -= 1
+            return
+
         pyxel.cls(0)
         self.draw_ground()
         self.draw_enemies()
@@ -117,11 +125,11 @@ class App:
 
 
     def draw_stats(self):
-        pyxel.text(2, 2, "{0:0=2d}".format(counter["enemies_til_next"]), 10) # double digit int from Stack Overflow
+        pyxel.text(2, 2, "{0:0=2d}".format(counter["enemies_until_next_round"]), 10) # double digit int from Stack Overflow
 
-        if clock.text_time_left > 0:
-            clock.text_time_left -= 1
-            pyxel.text(35, 20, "Round up", pyxel.frame_count % 16) # From pyxel hello world example
+
+    def draw_round_up_text(self):
+        pyxel.text(35, 20, "Round up", pyxel.frame_count % 16) # From pyxel hello world example
 
 
     def draw_ground(self):

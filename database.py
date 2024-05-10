@@ -18,7 +18,7 @@ def start_table():
     round (
         num int(8), 
         max_enemies int(8), 
-        enemies_til_next int(8)
+        enemies_until_next_round int(8)
     );
     """
 
@@ -26,7 +26,7 @@ def start_table():
 
 
     sqlite_query = """
-    insert into round (num, max_enemies, enemies_til_next) values
+    insert into round (num, max_enemies, enemies_until_next_round) values
     (1, 5, 10),
     (2, 6, 15),
     (3, 7, 20)
@@ -39,7 +39,7 @@ def start_table():
 
 def get_round_data(round_num):
     sqlite_query = f"""
-    select max_enemies, enemies_til_next from round
+    select max_enemies, enemies_until_next_round from round
     where num = {round_num};
     """
     result = cursor.execute(sqlite_query).fetchone()
@@ -47,7 +47,7 @@ def get_round_data(round_num):
 
     return {
         "max_enemies": result[0],
-        "enemies_til_next": result[1]
+        "enemies_until_next_round": result[1]
     }
     
 
