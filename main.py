@@ -34,6 +34,7 @@ class App:
 
         
     def update(self):
+        clock.timer += 1
         if clock.round_up_text_time_left > 0:
             return
 
@@ -48,10 +49,10 @@ class App:
 
     def update_clock(self):
         if counter["current_enemies"] < counter["max_enemies"] \
-        and pyxel.frame_count - clock.delay_enemy_spawn >= clock.time_last_enemy_spawn:
+        and clock.timer - clock.delay_enemy_spawn >= clock.time_last_enemy_spawn:
             self.spawn_enemy()
             counter["current_enemies"] += 1
-            clock.time_last_enemy_spawn = pyxel.frame_count
+            clock.time_last_enemy_spawn = clock.timer
 
 
     def spawn_enemy(self):
@@ -66,9 +67,9 @@ class App:
         for enemy in active_enemies:
             enemy.update()
 
-            if self.are_nearby( (self.player.sword.x, self.player.sword.y), (enemy.x, enemy.y) ):
+            if self.are_nearby( (self.player.sword.x, self.player.sword.y), (enemy.x, enemy.y), (4,2) ):
                 active_enemies.remove(enemy)
-                enemy.respawn_time = pyxel.frame_count + clock.delay_enemy_respawn
+                enemy.respawn_time = clock.timer + clock.delay_enemy_respawn
                 dead_enemies.append( enemy )
 
                 counter["enemies_until_next_round"] -= 1
@@ -76,7 +77,7 @@ class App:
                     self.round_up()
 
         for enemy in dead_enemies:
-            if enemy.respawn_time <= pyxel.frame_count:
+            if enemy.respawn_time <= clock.timer:
                 dead_enemies.remove(enemy)
                 enemy.__init__()
                 active_enemies.append(enemy)
@@ -129,7 +130,7 @@ class App:
 
 
     def draw_round_up_text(self):
-        pyxel.text(35, 20, "Round up", pyxel.frame_count % 16) # From pyxel hello world example
+        pyxel.text(35, 20, "Round up", clock.timer % 16) # From pyxel hello world example
 
 
     def draw_ground(self):

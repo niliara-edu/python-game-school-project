@@ -1,4 +1,8 @@
 import sqlite3
+import os
+
+if not os.path.exists("./sqlite/"):
+    os.makedirs("./sqlite/")
 
 connection = sqlite3.connect("./sqlite/enemies.db")
 cursor = connection.cursor()
@@ -34,8 +38,6 @@ def start_table():
     """
     cursor.execute(sqlite_query)
     
-    record = cursor.fetchall()
-    print("Round table values: ", record)
 
 def get_round_data(round_num):
     sqlite_query = f"""
