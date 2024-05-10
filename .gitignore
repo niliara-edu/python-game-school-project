@@ -2,4 +2,4 @@ __pycache__
 plans
 c
 count_lines.c
-sqlite/enemies.db
+sqlite
