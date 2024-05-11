@@ -9,7 +9,7 @@ cursor = connection.cursor()
 
 # most information taken from https://pynative.com/python-sqlite/
 
-def start_table():
+def start_rounds_table():
 
     sqlite_query = """
     drop table if exists round;
