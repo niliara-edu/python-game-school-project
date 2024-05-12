@@ -21,7 +21,7 @@ class Player:
     def update(self):
         self.update_x()
         self.update_y()
-        self.sword.update( self.position.x, self.position.y, self.velocity.x )
+        self.sword.update( self.position, self.velocity.x )
        
 
     def update_x(self):
@@ -80,7 +80,7 @@ class Player:
         if not self.was_on_ground:
             if self.velocity.y < 0:
                 frame = 16
-            if self.velocity.y > 0:
+            elif self.velocity.y > 0:
                 frame = 24
 
         elif self.velocity.x == 0:
@@ -98,16 +98,16 @@ class Sword:
     def __init__(self):
         self.position = vector.Vector()
         self.direction = 1
-        self.length = 4
+        self.distance_to_player = 4
 
-    def update(self, x, y, velocity_x):
-        if velocity_x == 0:
+    def update(self, player_position, player_velocity_x):
+        if player_velocity_x == 0:
             self.direction = 1
         else:
-            self.direction = velocity_x / abs(velocity_x)
+            self.direction = player_velocity_x / abs(player_velocity_x)
 
-        self.position.x = x + self.length * self.direction
-        self.position.y = y
+        self.position.x = player_position.x + self.distance_to_player * self.direction
+        self.position.y = player_position.y
 
     def draw(self, extra_y = 0):
         w = self.direction * 8

@@ -1,3 +1,4 @@
 - slimes reset
-- dx -> velocity.x
-- x, y -> position.x 
+- hp bar + hurt + freeze time on hurt
+- menu
+- input username
