@@ -9,6 +9,7 @@ cursor = connection.cursor()
 
 # most information taken from https://pynative.com/python-sqlite/
 
+
 def start_rounds_table():
 
     sqlite_query = """
@@ -20,7 +21,6 @@ def start_rounds_table():
     create table 
     if not exists 
     round (
-        num int(8), 
         max_enemies int(8), 
         enemies_until_next_round int(8)
     );
@@ -30,10 +30,10 @@ def start_rounds_table():
 
 
     sqlite_query = """
-    insert into round (num, max_enemies, enemies_until_next_round) values
-    (1, 5, 10),
-    (2, 6, 15),
-    (3, 7, 20)
+    insert into round (max_enemies, enemies_until_next_round) values
+    (5, 10),
+    (6, 15),
+    (7, 20)
     ;
     """
     cursor.execute(sqlite_query)
@@ -42,7 +42,7 @@ def start_rounds_table():
 def get_round_data(round_num):
     sqlite_query = f"""
     select max_enemies, enemies_until_next_round from round
-    where num = {round_num};
+    where rowid = {round_num};
     """
     result = cursor.execute(sqlite_query).fetchone()
 

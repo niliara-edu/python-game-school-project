@@ -5,13 +5,6 @@ import clock
 import database
 
 
-stage1_enemies = [
-    slime.Enemy(),
-    slime.Enemy(),
-    slime.Enemy(),
-    slime.Enemy()
-]
-
 class Game:
     def __init__(self, main):
         self.main = main
@@ -34,29 +27,31 @@ class Game:
 
         self.player.update()
         self.update_clock()
-        self.update_enemies()
+        self.update_entities()
         
 
 
     def update_clock(self):
         if self.counter.current_enemies < self.counter.max_enemies \
-        and (self.clock.timer - self.clock.delay_enemy_spawn) >= self.clock.time_last_enemy_spawn:
+        and (self.clock.timer - self.clock.delay_new_enemy_spawn) >= self.clock.time_last_new_enemy_spawn:
             self.spawn_enemy()
             self.counter.current_enemies += 1
-            self.clock.time_last_enemy_spawn = self.clock.timer
+            self.clock.time_last_new_enemy_spawn = self.clock.timer
 
 
     def spawn_enemy(self):
-        try:
-            self.active_enemies.append( stage1_enemies[self.counter.current_enemies] )
-        except:
-            self.active_enemies.append( slime.Enemy() )
+        self.active_enemies.append( slime.Enemy() )
+
+        #try:
+        #    self.active_enemies.append( stage1_enemies[self.counter.current_enemies] )
+        #except:
+        #    self.active_enemies.append( slime.Enemy() )
             
     
-    def update_enemies(self):
+    def update_entities(self):
         self.update_active_enemies()
-        self.update_sword_collision()
         self.update_player_collision()
+        self.update_sword_collision()
         self.update_dead_enemies()
 
 
@@ -67,7 +62,7 @@ class Game:
 
     def update_sword_collision(self):
         for enemy in self.active_enemies:
-            if self.are_nearby( (self.player.sword.x, self.player.sword.y), (enemy.x, enemy.y), (4,3)):
+            if self.are_nearby( (self.player.sword.position.x, self.player.sword.position.y), (enemy.position.x, enemy.position.y), (4,3)):
                 self.active_enemies.remove(enemy)
                 enemy.respawn_time = self.clock.timer + self.clock.delay_enemy_respawn
                 self.dead_enemies.append( enemy )
@@ -79,7 +74,7 @@ class Game:
                     
     def update_player_collision(self):
         for enemy in self.active_enemies:
-            if self.are_nearby( (self.player.x, self.player.y), (enemy.x, enemy.y) ):
+            if self.are_nearby( (self.player.position.x, self.player.position.y), (enemy.position.x, enemy.position.y) ):
                 self.main.start_menu()
 
 

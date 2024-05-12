@@ -1,56 +1,64 @@
 import pyxel
 import random
+import modules.vector as vector
 
 
 class Enemy:
     def __init__(self):
-        self.x = random.randint(10,90)
-        self.y = 92
-        self.dx = random.randint(0,1)
-        if self.dx == 0: self.dx = -1
+        starting_x = random.randint(10,90)
+        bottom_y_position = 92
+
+        self.position = vector.Vector(
+                x=starting_x,
+                y=bottom_y_position
+        )
+
+        initial_direction = random.randint(0,1)
+        if initial_direction == 0:
+            initial_direction = -1
         
-        self.margin = 10
         self.respawn_time = 0
         self.death_anima_frame = 0
-        self.death_anima_enabled = False
+
+        self.border_margin = 10
         self.ground_level = 50
         self.chance_to_flip = 25
 
+        self.climbing_speed = 0.75
         self.speed = 0.7
-        self.dx *= self.speed
-
+        self.velocity = vector.Vector( x = initial_direction * self.speed )
 
 
     def update(self):
-        if self.y > self.ground_level:
-            self.y -= 0.75
+        if self.position.y > self.ground_level:
+            self.position.y -= self.climbing_speed
             return
 
         if random.randint(0,self.chance_to_flip) == 0 or self.is_in_border():
-            self.dx *= -1
+            self.velocity.x *= -1
 
-        self.x += self.dx
+        self.position.x += self.velocity.x
 
  
     def is_in_border(self):
-        new_x = self.x + self.dx
-        if self.margin < new_x < pyxel.width - self.margin:
+        new_x = self.position.x + self.velocity.x
+        if self.border_margin < new_x < (pyxel.width - self.border_margin):
             return False
 
         return True
 
 
     def draw(self):
-        w = 8 if self.dx >= 0 else -8
-        u = (pyxel.frame_count // 3 % 4) * 8
+        width = 8 if self.velocity.x >= 0 else -8
+        frame = (pyxel.frame_count // 3 % 4) * 8
 
-        pyxel.blt(self.x - 4, self.y - 4, 0, u, 24, w, 8, 0)
+        pyxel.blt(self.position.x - 4, self.position.y - 4, 0, frame, 24, width, 8, 0)
 
 
     def death_anima(self):
         self.death_anima_frame += 1
-        w = 8 if self.dx >= 0 else -8
-        u = (self.death_anima_frame // 3 % 4) * 8
+        width = 8 if self.velocity.x >= 0 else -8
+        frame = (self.death_anima_frame // 3 % 4) * 8
 
-        pyxel.blt(self.x - 4, self.y - 4, 0, u, 24, w, 8, 0)
+        pyxel.blt(self.position.x - 4, self.position.y - 4, 0, frame, 24, width, 8, 0)
 

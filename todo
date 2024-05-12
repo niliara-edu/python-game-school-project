@@ -1,0 +1,3 @@
+- slimes reset
+- dx -> velocity.x
+- x, y -> position.x 

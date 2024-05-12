@@ -1,20 +1,18 @@
 import pyxel
+import modules.vector as vector
 
 class Player:
     def __init__(self):
-        self.x = pyxel.width / 2
-        self.y = 0
-        self.dx = 0
-        self.dy = 0
+        starting_x = pyxel.width / 2
+        self.position = vector.Vector( x=starting_x )
+        self.velocity = vector.Vector()
 
-        self.dxlast = 0
         self.was_on_ground = False
 
         self.speed = 1
         self.gravity = 0.8
         self.jump_force = 6
-        self.margin = 10
-
+        self.border_margin = 10
         self.ground_level = 50
 
         self.sword = Sword()
@@ -23,25 +21,23 @@ class Player:
     def update(self):
         self.update_x()
         self.update_y()
-        self.sword.update( self.x, self.y, self.dxlast )
+        self.sword.update( self.position.x, self.position.y, self.velocity.x )
        
 
     def update_x(self):
-        self.dx = 0
+        new_x_velocity = 0
         if pyxel.btn(pyxel.KEY_RIGHT):
-            self.dx += self.speed
+            new_x_velocity += self.speed
         if pyxel.btn(pyxel.KEY_LEFT):
-            self.dx -= self.speed
+            new_x_velocity -= self.speed
+
+        if new_x_velocity != 0:
+            self.velocity.x = new_x_velocity
 
         if self.is_in_border():
-            self.dx = 0
             return
 
-        if self.dx == 0:
-            self.dx = self.dxlast
-
-        self.dxlast = self.dx
-        self.x += self.dx
+        self.position.x += self.velocity.x
 
 
     def update_y(self):
@@ -50,70 +46,69 @@ class Player:
             return
 
         if self.is_on_ground():
-            self.dy = 0
-            self.y = self.ground_level
+            self.velocity.y = 0
+            self.position.y = self.ground_level
             self.was_on_ground = True
             self.check_jump()
             return
 
-        self.dy = self.dy + self.gravity
-        self.y += self.dy
+        self.velocity.y = self.velocity.y + self.gravity
+        self.position.y += self.velocity.y
 
     def is_on_ground(self):
-        if self.y + self.dy >= self.ground_level:
+        if self.position.y + self.velocity.y >= self.ground_level:
             return True
         else:
             return False
 
     def is_in_border(self):
-        new_x = self.x + self.dx
-        if self.margin < new_x < pyxel.width - self.margin:
+        new_x = self.position.x + self.velocity.x
+        if self.border_margin < new_x < (pyxel.width - self.border_margin):
             return False
 
         return True
 
     def check_jump(self):
         if pyxel.btn(pyxel.KEY_UP):
-            self.dy = -self.jump_force
+            self.velocity.y = -self.jump_force
             self.was_on_ground = False
 
 
     def draw(self):
-        w = 8 if self.dxlast >= 0 else -8 # From pyxel plattformer example
+        width = 8 if self.velocity.x >= 0 else -8 # From pyxel plattformer example
 
         if not self.was_on_ground:
-            if self.dy < 0:
-                u = 16
-            if self.dy > 0:
-                u = 24
+            if self.velocity.y < 0:
+                frame = 16
+            if self.velocity.y > 0:
+                frame = 24
 
-        elif self.dx == 0:
-            u = 0
+        elif self.velocity.x == 0:
+            frame = 0
         else:
-            u = (pyxel.frame_count // 3 % 4) * 8 # From pyxel plattformer example
+            frame = (pyxel.frame_count // 3 % 4) * 8 # From pyxel plattformer example
 
-        pyxel.blt(self.x - 4, self.y - 4, 0, u, 0, w, 8, 0) # From pyxel plattformer example
-        self.sword.draw(-1 if u>0 else 0)
+        pyxel.blt(self.position.x - 4, self.position.y - 4, 0, frame, 0, width, 8, 0) # From pyxel plattformer example
+        self.sword.draw(-1 if frame>0 else 0)
 
 
 
 
 class Sword:
     def __init__(self):
-        self.x = 0
-        self.y = 0
-        self.dx = 1
+        self.position = vector.Vector()
+        self.direction = 1
         self.length = 4
 
-    def update(self, x, y, dx):
-        if dx == 0:
-            self.dx = 1
+    def update(self, x, y, velocity_x):
+        if velocity_x == 0:
+            self.direction = 1
         else:
-            self.dx = dx
+            self.direction = velocity_x / abs(velocity_x)
 
-        self.x = x + self.length * self.dx / abs(self.dx)
-        self.y = y
+        self.position.x = x + self.length * self.direction
+        self.position.y = y
 
     def draw(self, extra_y = 0):
-        w = self.dx / abs(self.dx) * 8
-        pyxel.blt(self.x - 4, self.y - 4 + extra_y, 0, 0, 16, w, 8, 0)
+        w = self.direction * 8
+        pyxel.blt(self.position.x - 4, self.position.y - 4 + extra_y, 0, 0, 16, w, 8, 0)

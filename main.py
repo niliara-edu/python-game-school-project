@@ -6,14 +6,14 @@ import menu
 ########### from https://docs.python.org/3/library/enum.html ############
 
 from enum import Enum
-Stage = Enum('Stage', ['MENU', 'GAME', 'END_SCREEN', 'LEADERBOARD'])
+Section = Enum('Section', ['MENU', 'GAME', 'END_SCREEN', 'LEADERBOARD'])
 
 # Other uses of enum are also taken from this website
 
 #########################################################################
 
 
-class App:
+class Main:
     def __init__(self):
         pyxel.init(100, 80)
         database.start_rounds_table()
@@ -26,11 +26,11 @@ class App:
 
 
     def update(self):
-        match self.stage:
-            case Stage.MENU.value:
+        match self.section:
+            case Section.MENU.value:
                 self.menu.update()
                 self.menu.draw()
-            case Stage.GAME.value:
+            case Section.GAME.value:
                 self.game.update()
                 self.game.draw()
 
@@ -41,12 +41,12 @@ class App:
 
     def start_menu(self):
         self.menu.__init__(self)
-        self.stage = Stage.MENU.value
+        self.section = Section.MENU.value
 
 
     def start_game(self):
         self.game.__init__(self)
-        self.stage = Stage.GAME.value
+        self.section = Section.GAME.value
 
 
     def draw(self):
@@ -56,4 +56,4 @@ class App:
 
 
 
-App()
+Main()
