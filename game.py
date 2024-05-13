@@ -5,6 +5,8 @@ import enemies.bird as bird
 import enemies.ghost as ghost
 import clock
 import database
+import modules.vector as vector
+import modules.hp_bar as hp_bar
 
 
 class Game:
@@ -17,14 +19,18 @@ class Game:
         self.clock = clock.Clock()
         self.counter = clock.Counter()
 
+        self.round_up_text_enabled = False
+
         self.player = player.Player()
+        self.hp_bar = hp_bar.Hp_bar()
         pyxel.load("assets/cosas.pyxres")
 
 
         
     def update(self):
         self.clock.timer += 1
-        if self.clock.round_up_text_time_left > 0:
+        if self.clock.freeze_time_left > 0:
+            self.clock.freeze_time_left -= 1
             return
 
         self.player.update()
@@ -35,11 +41,10 @@ class Game:
 
     def update_clock(self):
         if self.counter.current_enemies < self.counter.max_enemies \
-        and (self.clock.timer - self.clock.delay_new_enemy_spawn) >= self.clock.time_last_new_enemy_spawn:
+        and (self.clock.timer - self.clock.delay_new_enemy_spawn) >= self.clock.last_new_enemy_spawn_time:
             self.spawn_enemy()
             self.counter.current_enemies += 1
-            self.clock.time_last_new_enemy_spawn = self.clock.timer
-
+            self.clock.last_new_enemy_spawn_time = self.clock.timer
 
     def spawn_enemy(self):
         self.active_enemies.append( slime.Enemy() )
@@ -78,7 +83,19 @@ class Game:
     def update_player_collision(self):
         for enemy in self.active_enemies:
             if self.are_nearby( (self.player.position.x, self.player.position.y), (enemy.position.x, enemy.position.y) ):
-                self.main.start_menu()
+                self.hurt_player()
+                self.hp_bar.update_hp(self.player.hp)
+
+    def hurt_player(self):
+        if self.clock.timer < (self.clock.last_player_hurt_time + self.clock.player_hurt_time_delay):
+            return
+
+        self.player.hurt()
+        self.clock.freeze_time_left = 4
+        self.clock.last_player_hurt_time = self.clock.timer
+
+        if self.player.hp <= 0:
+            self.main.start_menu()
 
 
     def update_dead_enemies(self):
@@ -100,7 +117,8 @@ class Game:
 
 
     def round_up(self):
-        self.clock.round_up_text_time_left = self.clock.round_up_text_span
+        self.clock.freeze_time_left = self.clock.round_up_text_span
+        self.round_up_text_enabled = True
         self.counter.round += 1
         round_data = database.get_round_data( self.counter.round )
 
@@ -110,16 +128,22 @@ class Game:
 
 
     def draw(self):
-        if self.clock.round_up_text_time_left > 0:
+        if self.round_up_text_enabled:
             self.draw_round_up_text()
-            self.clock.round_up_text_time_left -= 1
+            if self.clock.freeze_time_left == 0:
+                self.round_up_text_enabled = False
             return
 
+
         pyxel.cls(0)
+        self.draw_stats()
         self.draw_ground()
         self.draw_enemies()
         self.player.draw()
-        self.draw_stats()
+
+        if self.player.is_hurt and (self.clock.freeze_time_left == 0):
+            self.player.is_hurt = False
+
 
 
     def draw_enemies(self):
@@ -133,6 +157,7 @@ class Game:
 
     def draw_stats(self):
         pyxel.text(2, 2, "{0:0=2d}".format(self.counter.enemies_until_next_round), 10) # double digit int from Stack Overflow
+        self.hp_bar.draw()
 
 
     def draw_round_up_text(self):

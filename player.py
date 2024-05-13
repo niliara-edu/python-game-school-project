@@ -6,7 +6,9 @@ class Player:
         starting_x = pyxel.width / 2
         self.position = vector.Vector( x=starting_x )
         self.velocity = vector.Vector()
+        self.hp = 100
 
+        self.is_hurt = False
         self.was_on_ground = False
 
         self.speed = 1
@@ -73,10 +75,14 @@ class Player:
             self.velocity.y = -self.jump_force
             self.was_on_ground = False
 
+            
+    def hurt(self):
+        self.hp -= 20
+        self.is_hurt = True
+
 
     def draw(self):
         width = 8 if self.velocity.x >= 0 else -8 # From pyxel plattformer example
-
         if not self.was_on_ground:
             if self.velocity.y < 0:
                 frame = 16
@@ -88,7 +94,12 @@ class Player:
         else:
             frame = (pyxel.frame_count // 3 % 4) * 8 # From pyxel plattformer example
 
-        pyxel.blt(self.position.x - 4, self.position.y - 4, 0, frame, 0, width, 8, 0) # From pyxel plattformer example
+        if self.is_hurt:
+            v = 8
+        else:
+            v = 0
+
+        pyxel.blt(self.position.x - 4, self.position.y - 4, 0, frame, v, width, 8, 0) # From pyxel plattformer example
         self.sword.draw(-1 if frame>0 else 0)
 
 
