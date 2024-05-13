@@ -2,6 +2,7 @@ import pyxel
 import player
 import enemies.slime as slime
 import enemies.bird as bird
+import enemies.ghost as ghost
 import clock
 import database
 
