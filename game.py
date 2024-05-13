@@ -62,7 +62,7 @@ class Game:
 
     def update_sword_collision(self):
         for enemy in self.active_enemies:
-            if self.are_nearby( (self.player.sword.position.x, self.player.sword.position.y), (enemy.position.x, enemy.position.y), (4,3)):
+            if self.are_nearby( (self.player.sword.position.x, self.player.sword.position.y), (enemy.position.x, enemy.position.y), (self.player.sword.length, 4)):
                 self.active_enemies.remove(enemy)
                 enemy.respawn_time = self.clock.timer + self.clock.delay_enemy_respawn
                 self.dead_enemies.append( enemy )
@@ -124,8 +124,8 @@ class Game:
             enemy.draw()
 
         for enemy in self.dead_enemies:
-            if enemy.death_anima_frame < 12:
-                enemy.death_anima()
+            if enemy.death_animation_frame < 4:
+                enemy.death_animation()
 
 
     def draw_stats(self):

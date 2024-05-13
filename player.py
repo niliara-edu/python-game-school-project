@@ -98,6 +98,7 @@ class Sword:
     def __init__(self):
         self.position = vector.Vector()
         self.direction = 1
+        self.length = 6
         self.distance_to_player = 4
 
     def update(self, player_position, player_velocity_x):
