@@ -62,5 +62,5 @@ class Enemy:
         self.death_animation_frame = (self.death_animation_time // 3)
         u = self.death_animation_frame * 8
 
-        pyxel.blt(self.position.x - 4, self.position.y - 4, 0, u, 24, width, 8, 0)
+        pyxel.blt(self.position.x - 4, self.position.y - 4, 0, u, 48, width, 8, 0)
 

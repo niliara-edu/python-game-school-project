@@ -1,6 +1,7 @@
 import pyxel
 import player
 import enemies.slime as slime
+import enemies.bird as bird
 import clock
 import database
 
@@ -41,6 +42,7 @@ class Game:
 
     def spawn_enemy(self):
         self.active_enemies.append( slime.Enemy() )
+        self.active_enemies.append( bird.Enemy() )
 
         #try:
         #    self.active_enemies.append( stage1_enemies[self.counter.current_enemies] )
