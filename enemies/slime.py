@@ -18,11 +18,12 @@ class Enemy:
             initial_direction = -1
         
         self.respawn_time = 0
-        self.death_anima_frame = 0
+        self.death_animation_time = 0
+        self.death_animation_frame = 0
 
         self.border_margin = 10
         self.ground_level = 50
-        self.chance_to_flip = 25
+        self.chance_to_flip = 50
 
         self.climbing_speed = 0.75
         self.speed = 0.7
@@ -50,15 +51,16 @@ class Enemy:
 
     def draw(self):
         width = 8 if self.velocity.x >= 0 else -8
-        frame = (pyxel.frame_count // 3 % 4) * 8
+        u = (pyxel.frame_count // 3 % 4) * 8
 
-        pyxel.blt(self.position.x - 4, self.position.y - 4, 0, frame, 24, width, 8, 0)
+        pyxel.blt(self.position.x - 4, self.position.y - 4, 0, u, 24, width, 8, 0)
 
 
-    def death_anima(self):
-        self.death_anima_frame += 1
+    def death_animation(self):
+        self.death_animation_time += 1
         width = 8 if self.velocity.x >= 0 else -8
-        frame = (self.death_anima_frame // 3 % 4) * 8
+        self.death_animation_frame = (self.death_animation_time // 3)
+        u = self.death_animation_frame * 8
 
-        pyxel.blt(self.position.x - 4, self.position.y - 4, 0, frame, 24, width, 8, 0)
+        pyxel.blt(self.position.x - 4, self.position.y - 4, 0, u, 24, width, 8, 0)
 
