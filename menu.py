@@ -10,4 +10,7 @@ class Menu():
             self.main.start_game()
             
     def draw(self):
-        pyxel.text(5, 20, "Press space to start", 9)
+        pyxel.cls(0)
+        pyxel.text(10, 35, "Press space to start", 9)
+        pyxel.text(20, 20, "NOOB ADVENTURE", 10)
+        

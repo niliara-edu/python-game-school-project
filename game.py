@@ -64,7 +64,7 @@ class Game:
 
     def update_sword_collision(self):
         for enemy in self.active_enemies:
-            if self.are_nearby( (self.player.sword.position.x, self.player.sword.position.y), (enemy.position.x, enemy.position.y), (self.player.sword.length, 4)):
+            if self.are_nearby( (self.player.sword.position.x, self.player.sword.position.y), (enemy.position.x, enemy.position.y), (self.player.sword.length, 3)):
                 self.active_enemies.remove(enemy)
                 enemy.respawn_time = self.clock.timer + self.clock.delay_enemy_respawn
                 self.dead_enemies.append( enemy )

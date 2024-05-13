@@ -21,25 +21,33 @@ class Enemy:
         self.death_animation_frame = 0
 
         self.border_margin = 10
-        self.height_level = 35
-        self.chance_to_flip = 50
+        self.start_height_level = 30
+        self.end_height_level = 46
+        self.chance_to_flip = 100
 
-        self.descend_speed = 0.75
-        self.speed = 0.7
+        self.fast_descend_speed = 0.75
+        self.slow_descend_speed = 0.05
+        self.speed = 0.4
         self.velocity = vector.Vector( x = initial_direction * self.speed )
-
+                
 
     def update(self):
-        if self.position.y < self.height_level:
-            self.position.y += self.descend_speed
+        if self.position.y < self.start_height_level:
+            self.position.y += self.fast_descend_speed
             return
 
         if random.randint(0,self.chance_to_flip) == 0 or self.is_in_border():
             self.velocity.x *= -1
 
         self.position.x += self.velocity.x
+        self.descend()
 
+
+    def descend(self):
+        if self.position.y < self.end_height_level:
+            self.position.y += self.slow_descend_speed
  
+
     def is_in_border(self):
         new_x = self.position.x + self.velocity.x
         if self.border_margin < new_x < (pyxel.width - self.border_margin):
