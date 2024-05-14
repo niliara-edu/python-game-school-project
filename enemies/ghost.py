@@ -21,8 +21,8 @@ class Enemy:
         self.death_animation_frame = 0
 
         self.border_margin = 10
-        self.start_height_level = 30
-        self.end_height_level = 46
+        self.min_height_level = 30
+        self.max_height_level = 46
         self.chance_to_flip = 100
 
         self.fast_descend_speed = 0.75
