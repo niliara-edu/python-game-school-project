@@ -10,7 +10,7 @@ class Enemy:
 
         self.position = vector.Vector(
                 x=starting_x,
-                y=bottom_y_position
+                y=top_y_position
         )
 
         initial_direction = random.randint(0,1)
