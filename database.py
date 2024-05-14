@@ -73,21 +73,7 @@ def start_enemies_table():
 
         ("Moai"),
 
-        ("Bird"),
-
-        ("Slime"),
-        ("Slime"),
-        ("Slime"),
-        ("Slime"),
-        ("Slime"),
-        ("Slime"),
-        ("Slime"),
-        ("Slime"),
-        ("Slime"),
-        ("Slime"),
-        ("Slime"),
-        ("Slime"),
-        ("Slime");
+        ("Bird");
     """ )
 
 
@@ -127,6 +113,9 @@ def get_enemy(enemy_num):
         case 4: return moai.Enemy()
 
 
+
+def test_highscores():
+    return [["me", 200, 1119], ["notme", 200, 1120]]
 
 
 
