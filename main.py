@@ -3,14 +3,8 @@ import database
 import game
 import menu
 
-########### from https://docs.python.org/3/library/enum.html ############
-
 from enum import Enum
 Section = Enum('Section', ['MENU', 'GAME', 'END_SCREEN', 'LEADERBOARD'])
-
-# Other uses of enum are also taken from this website
-
-#########################################################################
 
 
 class Main:

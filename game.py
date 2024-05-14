@@ -156,12 +156,12 @@ class Game:
 
 
     def draw_stats(self):
-        pyxel.text(2, 2, "{0:0=2d}".format(self.counter.enemies_until_next_round), 10) # double digit int from Stack Overflow
+        pyxel.text(2, 2, "{0:0=2d}".format(self.counter.enemies_until_next_round), 10)
         self.hp_bar.draw()
 
 
     def draw_round_up_text(self):
-        pyxel.text(35, 20, "Round up", self.clock.timer % 16) # From pyxel hello world example
+        pyxel.text(35, 20, "Round up", self.clock.timer % 16)
 
 
     def draw_ground(self):
