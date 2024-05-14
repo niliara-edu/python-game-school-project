@@ -5,6 +5,7 @@ import os
 import enemies.slime as slime
 import enemies.bird as bird
 import enemies.ghost as ghost
+import enemies.moai as moai
 
 
 if not os.path.exists("./sqlite/"):
@@ -71,7 +72,7 @@ def start_enemies_table():
         ("Bird"),
         ("Slime"),
 
-        ("Slime"),
+        ("Moai"),
 
         ("Bird"),
 
@@ -95,6 +96,8 @@ def start_enemies_table():
     insert into enemy_index (enemy_name) values
         ("Slime"),
         ("Bird");
+        ("Ghost");
+        ("Moai");
     """ )
 
 
@@ -121,6 +124,8 @@ def get_enemy(enemy_num):
     match result[0]:
         case 1: return slime.Enemy()
         case 2: return bird.Enemy()
+        case 3: return ghost.Enemy()
+        case 4: return moai.Enemy()
 
 
 

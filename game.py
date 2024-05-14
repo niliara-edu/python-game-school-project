@@ -43,6 +43,7 @@ class Game:
             self.counter.current_enemies += 1
             self.clock.last_new_enemy_spawn_time = self.clock.timer
 
+
     def spawn_enemy(self):
         self.active_enemies.append( database.get_enemy(self.counter.current_enemies) )
             
