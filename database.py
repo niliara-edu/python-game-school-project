@@ -14,7 +14,6 @@ if not os.path.exists("./sqlite/"):
 connection = sqlite3.connect("./sqlite/enemies.db")
 cursor = connection.cursor()
 
-# most information taken from https://pynative.com/python-sqlite/
 
 def start_tables():
     start_rounds_table()
