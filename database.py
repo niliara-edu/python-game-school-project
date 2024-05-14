@@ -1,6 +1,12 @@
 import sqlite3
 import os
 
+
+import enemies.slime as slime
+import enemies.bird as bird
+import enemies.ghost as ghost
+
+
 if not os.path.exists("./sqlite/"):
     os.makedirs("./sqlite/")
 
@@ -9,49 +15,117 @@ cursor = connection.cursor()
 
 # most information taken from https://pynative.com/python-sqlite/
 
+def start_tables():
+    start_rounds_table()
+    start_enemies_table()
+
 
 def start_rounds_table():
 
-    sqlite_query = """
+    cursor.execute( """
     drop table if exists round;
-    """
-    cursor.execute(sqlite_query)
+    """)
     
-    sqlite_query = """
+    cursor.execute( """
     create table 
     if not exists 
     round (
         max_enemies int(8), 
         enemies_until_next_round int(8)
     );
-    """
+    """)
 
-    cursor.execute(sqlite_query)
-
-
-    sqlite_query = """
+    cursor.execute( """
     insert into round (max_enemies, enemies_until_next_round) values
     (5, 10),
     (6, 15),
     (7, 20)
     ;
-    """
-    cursor.execute(sqlite_query)
+    """ )
+
     
 
+
+def start_enemies_table():
+    cursor.execute( "drop table if exists enemies;" )
+    cursor.execute( "drop table if exists enemy_index;" )
+
+    cursor.execute( """
+    create table if not exists enemies (
+        enemy_name varchar(10)
+    )
+    """ )
+
+    cursor.execute( """
+    create table if not exists enemy_index (
+        enemy_name varchar(10)
+    )
+    """ )
+
+    cursor.execute( """
+    insert into enemies (enemy_name) values
+        ("Slime"),
+        ("Slime"),
+        ("Slime"),
+
+        ("Bird"),
+        ("Slime"),
+
+        ("Slime"),
+
+        ("Bird"),
+
+        ("Slime"),
+        ("Slime"),
+        ("Slime"),
+        ("Slime"),
+        ("Slime"),
+        ("Slime"),
+        ("Slime"),
+        ("Slime"),
+        ("Slime"),
+        ("Slime"),
+        ("Slime"),
+        ("Slime"),
+        ("Slime");
+    """ )
+
+
+    cursor.execute( """
+    insert into enemy_index (enemy_name) values
+        ("Slime"),
+        ("Bird");
+    """ )
+
+
 def get_round_data(round_num):
-    sqlite_query = f"""
+    result = cursor.execute( f"""
     select max_enemies, enemies_until_next_round from round
     where rowid = {round_num};
-    """
-    result = cursor.execute(sqlite_query).fetchone()
-
+    """ ).fetchone()
 
     return {
         "max_enemies": result[0],
         "enemies_until_next_round": result[1]
     }
-    
+
+
+def get_enemy(enemy_num):
+    result = cursor.execute( f"""
+    select enemy_index.rowid
+    from enemy_index
+    inner join enemies on enemies.enemy_name = enemy_index.enemy_name
+    where enemies.rowid = {enemy_num+1};
+    """).fetchone()
+
+    match result[0]:
+        case 1: return slime.Enemy()
+        case 2: return bird.Enemy()
+
+
+
+
+
 
 def close():
     cursor.close()

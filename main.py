@@ -3,20 +3,14 @@ import database
 import game
 import menu
 
-########### from https://docs.python.org/3/library/enum.html ############
-
 from enum import Enum
 Section = Enum('Section', ['MENU', 'GAME', 'END_SCREEN', 'LEADERBOARD'])
-
-# Other uses of enum are also taken from this website
-
-#########################################################################
 
 
 class Main:
     def __init__(self):
         pyxel.init(100, 80)
-        database.start_rounds_table()
+        database.start_tables()
         self.menu = menu.Menu(self)
         self.game = game.Game(self)
 
