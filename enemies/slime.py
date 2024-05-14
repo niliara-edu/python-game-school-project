@@ -17,7 +17,6 @@ class Enemy:
         if initial_direction == 0:
             initial_direction = -1
         
-        self.respawn_time = 0
         self.death_animation_time = 0
         self.death_animation_frame = 0
 

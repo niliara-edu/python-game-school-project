@@ -87,7 +87,7 @@ class Game:
         self.clock.last_player_hurt_time = self.clock.timer
 
         if self.player.hp <= 0:
-            self.main.start_menu()
+            self.main.end_game()
 
 
     def update_dead_enemies(self):

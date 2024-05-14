@@ -43,6 +43,10 @@ class Main:
         self.section = Section.GAME.value
 
 
+    def end_game(self):
+        pass
+
+
     def draw(self):
         ### Deleting this breaks the game, so let's not. ###
         pass
