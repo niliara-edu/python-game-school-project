@@ -1,8 +1,5 @@
 import pyxel
 import player
-import enemies.slime as slime
-import enemies.bird as bird
-import enemies.ghost as ghost
 import clock
 import database
 import modules.vector as vector
@@ -47,13 +44,7 @@ class Game:
             self.clock.last_new_enemy_spawn_time = self.clock.timer
 
     def spawn_enemy(self):
-        self.active_enemies.append( slime.Enemy() )
-        self.active_enemies.append( bird.Enemy() )
-
-        #try:
-        #    self.active_enemies.append( stage1_enemies[self.counter.current_enemies] )
-        #except:
-        #    self.active_enemies.append( slime.Enemy() )
+        self.active_enemies.append( database.get_enemy(self.counter.current_enemies) )
             
     
     def update_entities(self):
