@@ -6,6 +6,7 @@ import enemies.slime as slime
 import enemies.bird as bird
 import enemies.ghost as ghost
 import enemies.moai as moai
+import enemies.monkey as monkey
 
 connection = sqlite3.connect("./sqlite/enemies.db")
 cursor = connection.cursor()
@@ -64,7 +65,7 @@ def start_enemies_table():
 
     cursor.execute( """
     insert into enemies (enemy_name) values
-        ("Slime"),
+        ("Monkey"),
         ("Slime"),
         ("Slime"),
         ("Slime"),
@@ -121,7 +122,7 @@ def get_enemy(enemy_num):
         case 2: return bird.Enemy()
         case 3: return ghost.Enemy()
         case 4: return moai.Enemy()
-        case 5: return moai.Enemy()
+        case 5: return monkey.Enemy()
 
 def start_highscores_table():
     cursor.execute("""

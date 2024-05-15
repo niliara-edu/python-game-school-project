@@ -6,6 +6,7 @@ import player
 
 class Enemy:
     def __init__(self):
+        self.has_bullets = False
 
         self.position = vector.Vector()
         self.fall()

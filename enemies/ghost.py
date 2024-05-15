@@ -6,6 +6,8 @@ import modules.vector as vector
 
 class Enemy:
     def __init__(self):
+        self.has_bullets = False
+
         starting_x = (96, 4)
         self.middle_height = 38
         self.counter = random.randint(0,99)

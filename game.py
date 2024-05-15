@@ -60,6 +60,9 @@ class Game:
     def update_active_enemies(self):
         for enemy in self.active_enemies:
             enemy.update()
+            if enemy.has_bullets:
+                for bullet in enemy.bullets:
+                    self.update_bullet(enemy, bullet)
 
 
     def update_sword_collision(self):
@@ -78,9 +81,15 @@ class Game:
         for enemy in self.active_enemies:
             if self.are_nearby( (self.player.position.x, self.player.position.y), (enemy.position.x, enemy.position.y) ):
                 self.hurt_player()
-                self.hp_bar.update_hp(self.player.hp)
+
+            if enemy.has_bullets:
+                for bullet in enemy.bullets:
+                    if self.are_nearby( (self.player.position.x, self.player.position.y), (bullet.position.x, bullet.position.y) ):
+                        self.hurt_player()
+
 
     def hurt_player(self):
+        self.hp_bar.update_hp(self.player.hp)
         if self.clock.timer < (self.clock.last_player_hurt_time + self.clock.player_hurt_time_delay):
             return
 
@@ -98,6 +107,17 @@ class Game:
                 self.dead_enemies.remove(enemy)
                 enemy.__init__()
                 self.active_enemies.append(enemy)
+
+            if enemy.has_bullets:
+                for bullet in enemy.bullets:
+                    self.update_bullet(enemy, bullet)
+
+
+    def update_bullet(self, enemy, bullet):
+        bullet.update()
+
+        if not (0-4) < bullet.position.x < (pyxel.width+4):
+            enemy.bullets.remove(bullet)
 
 
     def are_nearby(self, vec1, vec2, distance=(4,4)):
@@ -143,10 +163,17 @@ class Game:
     def draw_enemies(self):
         for enemy in self.active_enemies:
             enemy.draw()
+            if enemy.has_bullets:
+                for bullet in enemy.bullets:
+                    bullet.draw()
 
         for enemy in self.dead_enemies:
             if enemy.death_animation_frame < 4:
                 enemy.death_animation()
+
+            if enemy.has_bullets:
+                for bullet in enemy.bullets:
+                    bullet.draw()
 
 
     def draw_stats(self):
