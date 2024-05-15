@@ -40,9 +40,12 @@ def start_rounds_table():
 
     cursor.execute( """
     insert into round (max_enemies, enemies_until_next_round) values
-    (7, 15),
-    (11, 20),
-    (14, 25)
+    (7, 12),
+    (11, 18),
+    (14, 24),
+    (17, 30),
+    (20, 40),
+    (24, 9999999999)
     ;
     """ )
 
@@ -65,7 +68,7 @@ def start_enemies_table():
 
     cursor.execute( """
     insert into enemies (enemy_name) values
-        ("Monkey"),
+        ("Slime"),
         ("Slime"),
         ("Slime"),
         ("Slime"),
@@ -83,7 +86,19 @@ def start_enemies_table():
         ("Moai"),
         ("Slime"),
 
-        ("Bird");
+        ("Monkey"),
+        ("Bird"),
+        ("Slime"),
+
+        ("Ghost"),
+        ("Monkey"),
+        ("Slime"),
+        
+        ("Ghost"),
+        ("Bird"),
+        ("Slime"),
+        ("Moai"),
+        ("Slime");
     """ )
 
 
@@ -142,4 +157,6 @@ def save_score(username, score, time):
     insert into highscores (username, score, time) values
     ("{username}", {score}, {time});
     """)
+    print(cursor.execute("select * from highscores").fetchall())
+    connection.commit()
     #30fps
