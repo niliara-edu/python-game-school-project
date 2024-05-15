@@ -64,7 +64,7 @@ def start_enemies_table():
 
     cursor.execute( """
     insert into enemies (enemy_name) values
-        ("Moai"),
+        ("Ghost"),
         ("Slime"),
         ("Slime"),
 
