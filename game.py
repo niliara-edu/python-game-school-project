@@ -23,7 +23,7 @@ class Game:
         pyxel.load("assets/cosas.pyxres")
 
 
-        
+
     def update(self):
         self.clock.timer += 1
         if self.clock.freeze_time_left > 0:
@@ -33,7 +33,9 @@ class Game:
         self.player.update()
         self.update_clock()
         self.update_entities()
-        
+
+        if pyxel.btn(pyxel.KEY_Q):
+            pyxel.quit()
 
 
     def update_clock(self):

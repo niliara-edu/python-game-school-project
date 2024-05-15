@@ -19,4 +19,5 @@ class Counter():
     max_enemies = 3
     enemies_until_next_round = 5
     round = 0
+    score = 0
 

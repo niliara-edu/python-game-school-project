@@ -1,12 +1,13 @@
 import pyxel
 import random
 import modules.vector as vector
+import player
 
 
 class Enemy:
     def __init__(self):
-        starting_x = random.randint(10,90)
         top_y_position = -8
+        starting_x = random.randint(20,80)
 
         self.position = vector.Vector(
                 x=starting_x,
@@ -17,7 +18,7 @@ class Enemy:
         self.death_animation_frame = 0
 
         self.ground_level = 50
-        self.speed = 1
+        self.speed = 2
         self.velocity = vector.Vector( y = self.speed )
 
 
@@ -25,6 +26,7 @@ class Enemy:
         if self.position.y < self.ground_level:
             self.position.y += self.velocity.y
             return
+
 
     def draw(self):
         pyxel.blt(self.position.x - 4, self.position.y - 4, 0, 0, 40, 8, 8, 0)

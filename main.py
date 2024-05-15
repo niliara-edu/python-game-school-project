@@ -2,6 +2,7 @@ import pyxel
 import database
 import game
 import menu
+import end_screen
 
 from enum import Enum
 Section = Enum('Section', ['MENU', 'GAME', 'END_SCREEN', 'LEADERBOARD'])
@@ -13,6 +14,7 @@ class Main:
         database.start_tables()
         self.menu = menu.Menu(self)
         self.game = game.Game(self)
+        self.end_screen = end_screen.End_screen(self, self.game)
 
         self.start_menu()
 
@@ -27,10 +29,9 @@ class Main:
             case Section.GAME.value:
                 self.game.update()
                 self.game.draw()
-
-        if pyxel.btn(pyxel.KEY_Q):
-            database.close()
-            pyxel.quit()
+            case Section.END_SCREEN.value:
+                self.end_screen.update()
+                self.end_screen.draw()
 
 
     def start_menu(self):
@@ -44,7 +45,8 @@ class Main:
 
 
     def end_game(self):
-        pass
+        self.end_screen.__init__(self, self.game)
+        self.section = Section.END_SCREEN.value
 
 
     def draw(self):

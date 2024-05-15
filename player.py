@@ -24,6 +24,7 @@ class Player:
         self.update_x()
         self.update_y()
         self.sword.update( self.position, self.velocity.x )
+        xpos = self.position.x
        
 
     def update_x(self):

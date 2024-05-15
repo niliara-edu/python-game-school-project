@@ -7,17 +7,19 @@ import enemies.bird as bird
 import enemies.ghost as ghost
 import enemies.moai as moai
 
+connection = sqlite3.connect("./sqlite/enemies.db")
+cursor = connection.cursor()
+
 
 if not os.path.exists("./sqlite/"):
     os.makedirs("./sqlite/")
 
-connection = sqlite3.connect("./sqlite/enemies.db")
-cursor = connection.cursor()
 
 
 def start_tables():
     start_rounds_table()
     start_enemies_table()
+    start_highscores_table()
 
 
 def start_rounds_table():
@@ -43,8 +45,6 @@ def start_rounds_table():
     ;
     """ )
 
-    
-
 
 def start_enemies_table():
     cursor.execute( "drop table if exists enemies;" )
@@ -64,7 +64,7 @@ def start_enemies_table():
 
     cursor.execute( """
     insert into enemies (enemy_name) values
-        ("Monkey"),
+        ("Moai"),
         ("Slime"),
         ("Slime"),
 
@@ -114,14 +114,22 @@ def get_enemy(enemy_num):
         case 4: return moai.Enemy()
         case 5: return moai.Enemy()
 
-
+def start_highscores_table():
+    cursor.execute("""
+    create table if not exists highscores (
+        username varchar(8),
+        score int(32),
+        time int(32)
+    )
+    """)
 
 def test_highscores():
     return [["me", 200, 1119], ["notme", 200, 1120]]
 
 
-
-
-def close():
-    cursor.close()
-    connection.close()
+def save_score(username, score, time):
+    cursor.execute( f"""
+    insert into highscores (username, score, time) values
+    ("{username}", {score}, {time});
+    """)
+    #30fps
