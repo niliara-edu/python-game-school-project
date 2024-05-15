@@ -8,6 +8,7 @@ class Enemy:
     def __init__(self):
         starting_x = (96, 4)
         self.middle_height = 38
+        self.counter = random.randint(0,99)
 
         self.death_animation_time = 0
         self.death_animation_frame = 0
@@ -17,7 +18,7 @@ class Enemy:
         self.position = vector.Vector()
         self.starting_position = vector.Vector(
                 x=starting_x[initial_direction],
-                y=self.middle_height
+                y=self.get_y()
         )
 
         if initial_direction == 0:
@@ -26,10 +27,9 @@ class Enemy:
         self.death_animation_frame = 0
 
         self.border_margin = 10
-        self.speed = 0.6
+        self.speed = 0.8
         self.velocity = vector.Vector( x = initial_direction * self.speed )
         self.countdown = 32
-        self.counter = 0
                 
 
     def update(self):
@@ -46,7 +46,10 @@ class Enemy:
             self.velocity.x *= -1
 
         self.position.x += self.velocity.x
-        self.position.y = self.middle_height + numpy.sin(self.counter / 10) * 12
+        self.position.y = self.get_y()
+
+    def get_y(self):
+        return self.middle_height + numpy.sin(self.counter / 10) * 12
 
 
     def is_in_border(self):

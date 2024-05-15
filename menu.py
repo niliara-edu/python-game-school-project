@@ -4,10 +4,13 @@ import pyxel
 class Menu():
     def __init__(self, main):
         self.main = main
+        self.enter_pressed = True
 
     def update(self):
         if pyxel.btn(pyxel.KEY_RETURN):
-            self.main.start_game()
+            if not self.enter_pressed: self.main.start_game()
+        else:
+            self.enter_pressed = False
             
     def draw(self):
         pyxel.cls(0)

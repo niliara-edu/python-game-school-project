@@ -39,9 +39,9 @@ def start_rounds_table():
 
     cursor.execute( """
     insert into round (max_enemies, enemies_until_next_round) values
-    (5, 10),
-    (6, 15),
-    (7, 20)
+    (7, 15),
+    (11, 20),
+    (14, 25)
     ;
     """ )
 
@@ -64,14 +64,23 @@ def start_enemies_table():
 
     cursor.execute( """
     insert into enemies (enemy_name) values
-        ("Ghost"),
+        ("Slime"),
+        ("Slime"),
         ("Slime"),
         ("Slime"),
 
         ("Bird"),
         ("Slime"),
+        ("Bird"),
 
         ("Moai"),
+        ("Slime"),
+        ("Slime"),
+        ("Bird"),
+
+        ("Ghost"),
+        ("Moai"),
+        ("Slime"),
 
         ("Bird");
     """ )

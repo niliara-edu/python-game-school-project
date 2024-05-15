@@ -1,10 +1,10 @@
 import pyxel
 
 class Clock():
-    delay_new_enemy_spawn = 120
+    delay_new_enemy_spawn = 60
     last_new_enemy_spawn_time = -200
 
-    delay_enemy_respawn = 30
+    delay_enemy_respawn = 120
     round_up_text_span = 16
     freeze_time_left = 0
 
@@ -16,7 +16,7 @@ class Clock():
 
 class Counter():
     current_enemies = 0
-    max_enemies = 3
+    max_enemies = 4
     enemies_until_next_round = 5
     round = 0
     score = 0
