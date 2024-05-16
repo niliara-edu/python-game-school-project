@@ -29,6 +29,7 @@ class Enemy:
             return
 
         self.countdown -= 1
+        self.damage = 10
 
         if self.countdown < -(3*5):
             self.fall()
@@ -37,6 +38,7 @@ class Enemy:
 
 
     def fall(self):
+        self.damage = 30
         top_y_position = -8
         self.position.x = random.randint(20,80)
         self.position.y = top_y_position

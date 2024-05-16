@@ -15,7 +15,6 @@ cursor = connection.cursor()
 
 
 
-
 def start_tables():
     start_rounds_table()
     start_enemies_table()
@@ -162,7 +161,6 @@ def save_score(username, score, time):
     ("{username}", {score}, {time});
     """)
     connection.commit()
-    print(get_highscores())
 
 
 

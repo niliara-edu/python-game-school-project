@@ -83,7 +83,7 @@ class Player:
 
 
     def heal(self):
-        self.hp += 40
+        self.hp += 20
         if self.hp > 100:
             self.hp = 100
 

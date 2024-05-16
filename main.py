@@ -1,11 +1,12 @@
 import pyxel
 import database
-import game
-import menu
-import end_screen
+import scenes.game as game
+import scenes.menu as menu
+import scenes.end_screen as end_screen
+import scenes.highscores as highscores
 
 from enum import Enum
-Scene = Enum('Scene', ['MENU', 'GAME', 'END_SCREEN'])
+Scene = Enum('Scene', ['MENU', 'GAME', 'END_SCREEN', 'HIGHSCORES'])
 
 
 class Main:
@@ -15,6 +16,7 @@ class Main:
         self.menu = menu.Menu()
         self.game = game.Game()
         self.end_screen = end_screen.End_screen()
+        self.highscores = highscores.Highscores()
 
         self.start_menu()
 
@@ -22,7 +24,7 @@ class Main:
 
 
     def update(self):
-        match self.section:
+        match self.scene:
             case Scene.MENU.value:
                 self.menu.update()
             case Scene.GAME.value:
@@ -31,22 +33,29 @@ class Main:
             case Scene.END_SCREEN.value:
                 self.end_screen.update()
                 self.end_screen.draw()
+            case Scene.HIGHSCORES.value:
+                self.highscores.update()
 
 
     def start_menu(self):
         self.menu.ready(self)
-        self.section = Scene.MENU.value
+        self.scene = Scene.MENU.value
 
 
     def start_game(self):
         self.game.ready(self)
-        self.section = Scene.GAME.value
+        self.scene = Scene.GAME.value
 
 
     def end_game(self):
         self.end_screen.ready(self, self.game)
-        self.section = Scene.END_SCREEN.value
+        self.scene = Scene.END_SCREEN.value
 
+
+    def show_highscores(self):
+        self.highscores.ready(self)
+        self.scene = Scene.HIGHSCORES.value
+        
 
     def draw(self):
         ### Deleting this breaks the game, so let's not. ###
