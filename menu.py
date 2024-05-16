@@ -2,9 +2,10 @@ import pyxel
 
 
 class Menu():
-    def __init__(self, main):
+    def ready(self, main):
         self.main = main
         self.enter_pressed = True
+        self.draw()
 
     def update(self):
         if pyxel.btn(pyxel.KEY_RETURN):

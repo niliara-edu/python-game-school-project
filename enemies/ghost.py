@@ -1,11 +1,11 @@
 import pyxel
 import random
-import numpy
+import math
 import modules.vector as vector
 
 
 class Enemy:
-    def __init__(self):
+    def ready(self):
         self.has_bullets = False
 
         starting_x = (96, 4)
@@ -51,7 +51,7 @@ class Enemy:
         self.position.y = self.get_y()
 
     def get_y(self):
-        return self.middle_height + numpy.sin(self.counter / 10) * 12
+        return self.middle_height + math.sin(self.counter / 10) * 12
 
 
     def is_in_border(self):

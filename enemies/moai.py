@@ -5,7 +5,7 @@ import player
 
 
 class Enemy:
-    def __init__(self):
+    def ready(self):
         self.has_bullets = False
 
         self.position = vector.Vector()

@@ -4,7 +4,7 @@ import modules.vector as vector
 
 
 class Enemy:
-    def __init__(self):
+    def ready(self):
         self.has_bullets = False
 
         starting_x = random.randint(10,90)

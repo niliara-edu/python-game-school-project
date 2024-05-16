@@ -4,7 +4,7 @@ import modules.vector as vector
 
 
 class Enemy:
-    def __init__(self):
+    def ready(self):
         self.has_bullets = True
         self.bullets = []
         
@@ -29,14 +29,12 @@ class Enemy:
         self.death_animation_frame = 0
 
         self.ground_level = 50
-
         self.falling_speed = 2
         self.speed = 0.7
         self.jump_force = 4
         self.gravity = 1
         self.delay = 40
         self.countdown = self.delay
-
         self.initial_falling = True
 
 
@@ -70,10 +68,12 @@ class Enemy:
     def jump(self):
         self.velocity.y = -self.jump_force
 
+
     def shoot(self):
-        banana_instance = Banana(self.position, self.direction)
+        banana_instance = Banana()
+        banana_instance.ready(self.position, self.direction)
         self.bullets.append(banana_instance)
- 
+
 
     def draw(self):
         width = 8 * self.direction
@@ -96,9 +96,8 @@ class Enemy:
 
 
 
-
 class Banana():
-    def __init__(self, position, direction):
+    def ready(self, position, direction):
         self.position = vector.Vector()
         self.position.x = position.x
         self.position.y = position.y - 1

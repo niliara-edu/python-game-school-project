@@ -1,7 +1,6 @@
 import sqlite3
 import os
 
-
 import enemies.slime as slime
 import enemies.bird as bird
 import enemies.ghost as ghost
@@ -24,6 +23,7 @@ def start_tables():
 
 
 def start_rounds_table():
+    print(get_highscores())
 
     cursor.execute( """
     drop table if exists round;
@@ -139,6 +139,7 @@ def get_enemy(enemy_num):
         case 4: return moai.Enemy()
         case 5: return monkey.Enemy()
 
+
 def start_highscores_table():
     cursor.execute("""
     create table if not exists highscores (
@@ -148,15 +149,14 @@ def start_highscores_table():
     )
     """)
 
-def test_highscores():
-    return [["me", 200, 1119], ["notme", 200, 1120]]
-
 
 def save_score(username, score, time):
     cursor.execute( f"""
     insert into highscores (username, score, time) values
     ("{username}", {score}, {time});
     """)
-    print(cursor.execute("select * from highscores").fetchall())
     connection.commit()
-    #30fps
+
+
+def get_highscores():
+    return cursor.execute("select * from highscores order by score desc, time asc").fetchall()

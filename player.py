@@ -2,7 +2,7 @@ import pyxel
 import modules.vector as vector
 
 class Player:
-    def __init__(self):
+    def ready(self):
         starting_x = pyxel.width / 2
         self.position = vector.Vector( x=starting_x )
         self.velocity = vector.Vector()

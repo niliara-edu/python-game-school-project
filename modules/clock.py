@@ -1,5 +1,3 @@
-import pyxel
-
 class Clock():
     delay_new_enemy_spawn = 60
     last_new_enemy_spawn_time = -200
@@ -12,12 +10,3 @@ class Clock():
     last_player_hurt_time = 0
     
     timer = 0
-
-
-class Counter():
-    current_enemies = 0
-    max_enemies = 4
-    enemies_until_next_round = 5
-    round = 0
-    score = 0
-

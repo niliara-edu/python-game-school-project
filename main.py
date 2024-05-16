@@ -12,9 +12,9 @@ class Main:
     def __init__(self):
         pyxel.init(100, 80)
         database.start_tables()
-        self.menu = menu.Menu(self)
-        self.game = game.Game(self)
-        self.end_screen = end_screen.End_screen(self, self.game)
+        self.menu = menu.Menu()
+        self.game = game.Game()
+        self.end_screen = end_screen.End_screen()
 
         self.start_menu()
 
@@ -25,7 +25,6 @@ class Main:
         match self.section:
             case Section.MENU.value:
                 self.menu.update()
-                self.menu.draw()
             case Section.GAME.value:
                 self.game.update()
                 self.game.draw()
@@ -35,17 +34,17 @@ class Main:
 
 
     def start_menu(self):
-        self.menu.__init__(self)
+        self.menu.ready(self)
         self.section = Section.MENU.value
 
 
     def start_game(self):
-        self.game.__init__(self)
+        self.game.ready(self)
         self.section = Section.GAME.value
 
 
     def end_game(self):
-        self.end_screen.__init__(self, self.game)
+        self.end_screen.ready(self, self.game)
         self.section = Section.END_SCREEN.value
 
 

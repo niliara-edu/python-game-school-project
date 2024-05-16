@@ -3,42 +3,49 @@ import database
 
 
 class End_screen():
-    def __init__(self, main, game):
+    def ready(self, main, game):
         self.main = main
         self.game = game
         self.section_user = False
         self.char_removed = False
         self.keys_pressed_list = ["S"]
         self.char_limit = 8
+        self.key_pressed = True
+
+        self.draw_restart_screen()
 
         
     def update(self):
-        if not self.section_user:
-            if pyxel.btn(pyxel.KEY_R):
-                self.main.start_game()
-            if pyxel.btn(pyxel.KEY_S):
-                self.section_user = True
-                self.username = ""
-                self.last_key="S"
-
-        else:
+        if self.section_user:
             self.input_key()
-            
+            return
+        
+        if pyxel.btn(pyxel.KEY_R):
+            self.main.start_game()
+        if pyxel.btn(pyxel.KEY_S):
+            self.section_user = True
+            self.username = ""
+            self.last_key="S"
+
 
     def draw(self):
+        if self.section_user:
+            self.draw_username_input()
+        else:
+            self.draw_restart_screen()
+            
+
+    def draw_restart_screen(self):
         pyxel.cls(0)
 
-        if not self.section_user:
-            pyxel.text(10, 20, "RESTART?", 9)
-            pyxel.text(24, 40, "R", 9)
-            pyxel.text(70, 20, "SAVE", 10)
-            pyxel.text(76, 40, 'S', 10)
-        else:
-            pyxel.text(10, 20, "INPUT USERNAME:", 9)
-            pyxel.text(10, 30, self.username, 9)
-        
+        pyxel.text(10, 20, "RESTART?", 9)
+        pyxel.text(24, 40, "R", 9)
+        pyxel.text(70, 20, "SAVE", 10)
+        pyxel.text(76, 40, 'S', 10)
+
 
     def input_key(self):
+        self.key_pressed = False
         self.last_keys_pressed_list = self.keys_pressed_list
         self.keys_pressed_list = []
         if pyxel.btn(pyxel.KEY_Q): self.add_char('Q')
@@ -67,13 +74,16 @@ class End_screen():
         if pyxel.btn(pyxel.KEY_B): self.add_char('B')
         if pyxel.btn(pyxel.KEY_N): self.add_char('N')
         if pyxel.btn(pyxel.KEY_M): self.add_char('M')
+        if pyxel.btn(pyxel.KEY_SPACE): self.add_char(' ')
 
         if pyxel.btn(pyxel.KEY_BACKSPACE): self.remove_char()
         else: self.char_removed = False
+
         if pyxel.btn(pyxel.KEY_RETURN): self.save_data()
 
 
     def add_char(self, c):
+        self.key_pressed = True
         if len(self.username) >= self.char_limit:
             return
 
@@ -84,9 +94,11 @@ class End_screen():
 
 
     def remove_char(self):
+        self.key_pressed = True
         if not self.char_removed:
             self.username = self.username[:-1]
             self.char_removed = True
+
 
     def save_data(self):
         database.save_score(
@@ -96,3 +108,12 @@ class End_screen():
         )
 
         self.main.start_menu()
+
+        
+    def draw_username_input(self):
+        if self.key_pressed:
+            pyxel.cls(0)
+            pyxel.text(10, 20, "INPUT USERNAME:", 9)
+            pyxel.text(10, 30, self.username, 9)
+        
+
