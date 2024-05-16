@@ -66,7 +66,7 @@ def start_enemies_table():
 
     cursor.execute( """
     insert into enemies (enemy_name) values
-        ("Monkey"),
+        ("Slime"),
         ("Slime"),
         ("Slime"),
         ("Slime"),
