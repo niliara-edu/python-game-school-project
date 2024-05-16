@@ -2,7 +2,6 @@
 
 This is a school project heavily "inspired" by Slayin',
 made using python3 and the pyxel fantasy console.
-Heavily under development.
 
 ## Dependencies
 
