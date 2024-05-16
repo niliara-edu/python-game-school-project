@@ -37,10 +37,11 @@ class Highscores():
         y = 20 - self.y
         pyxel.text(32, y - 10, "Highscores", 10)
 
-        for score in self.highscores:
-            pyxel.text(10, y, score[0], 9)
-            pyxel.text(60, y, str(score[1]), 9)
-            pyxel.text(75, y, str(score[2]), 9)
+        for i in range(0, len(self.highscores)):
+            pyxel.text(8, y,  str(i), 9)
+            pyxel.text(18, y, self.highscores[i][0], 9)
+            pyxel.text(54, y, str(self.highscores[i][1]), 9)
+            pyxel.text(76, y, str(self.highscores[i][2]), 9)
             y += 10
         
         pyxel.text(6, y, "Press ENTER to go back", 12)
