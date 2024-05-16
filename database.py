@@ -23,8 +23,6 @@ def start_tables():
 
 
 def start_rounds_table():
-    print(get_highscores())
-
     cursor.execute( """
     drop table if exists round;
     """)
@@ -156,6 +154,8 @@ def save_score(username, score, time):
     ("{username}", {score}, {time});
     """)
     connection.commit()
+    print(get_highscores())
+
 
 
 def get_highscores():
