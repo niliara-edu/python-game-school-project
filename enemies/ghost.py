@@ -36,19 +36,28 @@ class Enemy:
 
     def update(self):
         if self.countdown > 0:
-            self.countdown -= 1
-            if self.countdown == 0:
-                self.position = self.starting_position
+            self.update_countdown()
             return
 
         self.counter += 1
 
-        
+        self.update_x()
+        self.position.y = self.get_y()
+
+
+    def update_countdown(self):
+        self.countdown -= 1
+
+        if self.countdown == 0:
+            self.position = self.starting_position
+
+
+    def update_x(self):
         if self.is_in_border():
             self.velocity.x *= -1
 
         self.position.x += self.velocity.x
-        self.position.y = self.get_y()
+
 
     def get_y(self):
         return self.middle_height + math.sin(self.counter / 10) * 12
