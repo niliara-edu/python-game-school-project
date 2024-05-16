@@ -103,12 +103,18 @@ class Game:
     def update_player_collision(self):
         for enemy in self.active_enemies:
             if self.are_nearby( (self.player.position.x, self.player.position.y), (enemy.position.x, enemy.position.y) ):
-                self.hurt_player()
+                self.hurt_player(enemy.damage)
 
             if enemy.has_bullets:
                 for bullet in enemy.bullets:
                     if self.are_nearby( (self.player.position.x, self.player.position.y), (bullet.position.x, bullet.position.y) ):
-                        self.hurt_player()
+                        self.hurt_player(bullet.damage)
+
+        for enemy in self.dead_enemies:
+            if enemy.has_bullets:
+                for bullet in enemy.bullets:
+                    if self.are_nearby( (self.player.position.x, self.player.position.y), (bullet.position.x, bullet.position.y) ):
+                        self.hurt_player(bullet.damage)
 
 
     def update_dead_enemies(self):
@@ -124,11 +130,11 @@ class Game:
 
 
 
-    def hurt_player(self):
+    def hurt_player(self, damage):
         if self.clock.timer < (self.clock.last_player_hurt_time + self.clock.player_hurt_time_delay):
             return
 
-        self.player.hurt()
+        self.player.hurt(damage)
         self.clock.freeze_time_left = 4
         self.clock.last_player_hurt_time = self.clock.timer
 
@@ -168,6 +174,9 @@ class Game:
 
         self.counter.max_enemies = round_data["max_enemies"]
         self.counter.enemies_until_next_round = round_data["enemies_until_next_round"]
+
+        self.player.heal()
+        self.hp_bar.update_hp(self.player.hp)
     
 
 

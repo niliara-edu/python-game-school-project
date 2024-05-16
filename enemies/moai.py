@@ -20,6 +20,8 @@ class Enemy:
 
         self.countdown = 96
 
+        self.damage = 30
+
 
     def update(self):
         if self.position.y < self.ground_level:

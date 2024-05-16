@@ -33,9 +33,11 @@ class Enemy:
         self.speed = 0.7
         self.jump_force = 4
         self.gravity = 1
-        self.delay = 40
-        self.countdown = self.delay
+        self.delay = 80
+        self.countdown = self.delay / 2
         self.initial_falling = True
+
+        self.damage = 20
 
 
     def update(self):
@@ -103,6 +105,8 @@ class Banana():
         self.position.y = position.y - 1
         self.direction = direction
         self.speed = 1 * direction
+
+        self.damage = 10
 
     def update(self):
         self.position.x += self.speed

@@ -32,6 +32,8 @@ class Enemy:
         self.speed = 0.8
         self.velocity = vector.Vector( x = initial_direction * self.speed )
         self.countdown = 32
+
+        self.damage = 20
                 
 
     def update(self):

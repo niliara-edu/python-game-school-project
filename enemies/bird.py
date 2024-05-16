@@ -31,6 +31,8 @@ class Enemy:
         self.slow_descend_speed = 0.05
         self.speed = 0.4
         self.velocity = vector.Vector( x = initial_direction * self.speed )
+
+        self.damage = 10
                 
 
     def update(self):

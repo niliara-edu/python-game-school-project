@@ -30,6 +30,8 @@ class Enemy:
         self.speed = 0.7
         self.velocity = vector.Vector( x = initial_direction * self.speed )
 
+        self.damage = 10
+
 
     def update(self):
         if self.position.y > self.ground_level:

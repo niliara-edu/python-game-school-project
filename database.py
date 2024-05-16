@@ -7,12 +7,12 @@ import enemies.ghost as ghost
 import enemies.moai as moai
 import enemies.monkey as monkey
 
+if not os.path.exists("./sqlite/"):
+    os.makedirs("./sqlite/")
+
 connection = sqlite3.connect("./sqlite/enemies.db")
 cursor = connection.cursor()
 
-
-if not os.path.exists("./sqlite/"):
-    os.makedirs("./sqlite/")
 
 
 
@@ -68,7 +68,7 @@ def start_enemies_table():
 
     cursor.execute( """
     insert into enemies (enemy_name) values
-        ("Slime"),
+        ("Monkey"),
         ("Slime"),
         ("Slime"),
         ("Slime"),

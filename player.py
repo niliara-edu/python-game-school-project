@@ -77,9 +77,15 @@ class Player:
             self.was_on_ground = False
 
             
-    def hurt(self):
-        self.hp -= 20
+    def hurt(self, damage):
+        self.hp -= damage
         self.is_hurt = True
+
+
+    def heal(self):
+        self.hp += 40
+        if self.hp > 100:
+            self.hp = 100
 
 
     def draw(self):
