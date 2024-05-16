@@ -9,7 +9,7 @@ Section = Enum('Section', ['MENU', 'GAME', 'END_SCREEN', 'LEADERBOARD'])
 
 
 class Main:
-    def __init__(self):
+    def ready(self):
         pyxel.init(100, 80)
         database.start_tables()
         self.menu = menu.Menu()
@@ -55,4 +55,4 @@ class Main:
 
 
 
-Main()
+Main().ready()
