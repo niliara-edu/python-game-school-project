@@ -1,4 +1,4 @@
-# Hi!
+# Python game school project
 
 This is a school project heavily "inspired" by Slayin',
 made using python3 and the pyxel fantasy console.
@@ -18,7 +18,7 @@ python3 main.py
 
 ### For school:
 
-- [Project document](https://niliara.xyz/docs/python-school-project.pdf)
+- [Project document](https://niliara.xyz/docs/python-game-school-project.pdf)
 - [Document's source code](https://github.com/niliara-edu/cat-Projectes-LaTeX-2024/tree/main/python)
 
 
