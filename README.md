@@ -16,5 +16,10 @@ To execute, run:
 python3 main.py
 ```
 
-(for school) Project document: [main.pdf](https://github.com/niliara-edu/cat-Projectes-LaTeX-2024/blob/main/python/main.pdf)
+### For school:
+
+- [Project document](https://niliara.xyz/docs/python-school-project.pdf)
+- [Document's source code](https://github.com/niliara-edu/cat-Projectes-LaTeX-2024/tree/main/python)
+
+
 
