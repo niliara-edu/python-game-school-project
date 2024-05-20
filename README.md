@@ -16,6 +16,5 @@ To execute, run:
 python3 main.py
 ```
 
-If you want to contribute, please feel free to point every single mistake I do!
-I'm pretty bad at coding and feedback would be extremely appreciated!
+(for school) Project document: [main.pdf](https://github.com/niliara-edu/cat-Projectes-LaTeX-2024/blob/main/python/main.pdf)
 
